@@ -1,0 +1,8 @@
+body {
+    box-sizing: content-box;
+}
+
+canvas {
+    background-color: navy;
+    border: yellowgreen solid 1px;
+}

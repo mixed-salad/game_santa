@@ -177,9 +177,11 @@ class Game {
               if(present.y + present.height > house.y && present.x + present.width >= house.x && present.x <= house.x + house.width) {
                   const indexOfPresent = this.presents.indexOf(present);
                   this.presents.splice(indexOfPresent, 1);
-                  this.score += 10;
+                  if(!house.delivered){
+                      this.score += 10;
+                      house.delivered = true;
+                  }
                   console.log(this.score);
-                  house.delivered = true;
               }
           }
       }

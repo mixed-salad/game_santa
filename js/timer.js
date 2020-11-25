@@ -1,6 +1,9 @@
 class Timer {
     constructor(game) {
         this.game = game;
+    }
+     
+    startTimer() {
         this.timer = setInterval(() => {
             this.game.timeLeft -= 1;
         }, 1000);

@@ -2,7 +2,23 @@ body {
     box-sizing: content-box;
 }
 
+
+
+#before-game {
+    display: initial;
+    height: 100vh;
+}
+
+#play {
+    display: none;
+}
+
+#after-game {
+    display: none;
+}
+
 canvas {
     background-color: navy;
     border: yellowgreen solid 1px;
+    margin: 0 auto;
 }

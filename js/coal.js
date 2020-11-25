@@ -2,22 +2,24 @@ class Coal {
     constructor (x, y, strength) {
         this.x = x;
         this.y = y;
-        this.width = 20;
-        this.height = 20;
+        this.radius = 10;
         this.speedX = 20;
-        this.speedY = -6;
+        this.speedY = -2;
         this.strength = strength;
     }
 
     draw() {
         context.fillStyle = "black";
-        context.fillRect(this.x, this.y, this.width, this.height);
+        context.beginPath();
+        context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        context.closePath();
+        context.fill();
         context.strokeStyle = "white";
-        context.strokeRect(this.x, this.y, this.width, this.height);
+        context.stroke();
     }
 
     runLogic() {
-        this.x += this.speedX * this.strength;
+        this.x += this.speedX * this.strength * 2;
         this.y += this.speedY;
         this.speedX += .08;
         this.speedY += GRAVITY;

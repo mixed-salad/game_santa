@@ -6,6 +6,7 @@ class Enemy {
         this.height = 20;
         this.speed = speed;
         this.hit = false;
+        this.dead = false;
     }
 
     draw() {
@@ -16,11 +17,14 @@ class Enemy {
     }
 
     runLogic() {
-        if(!this.hit){
+        if(!this.hit && !this.dead){
             this.x -= this.speed;
-        }else{
+        } else if (this.hit) {
             this.x -= 40;
             this.y -= 20;
+        } else if (this.dead) {
+            this.x -= 2;
+            this.y += 20 + GRAVITY;
         }
     }
 }

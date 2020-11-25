@@ -1,4 +1,4 @@
-class Present {
+class Coal {
     constructor (x, y, strength) {
         this.x = x;
         this.y = y;
@@ -7,13 +7,12 @@ class Present {
         this.speedX = 20;
         this.speedY = -6;
         this.strength = strength;
-        console.log(this.strength);
     }
 
     draw() {
-        context.fillStyle = "yellow";
+        context.fillStyle = "black";
         context.fillRect(this.x, this.y, this.width, this.height);
-        context.strokeStyle = "green";
+        context.strokeStyle = "white";
         context.strokeRect(this.x, this.y, this.width, this.height);
     }
 

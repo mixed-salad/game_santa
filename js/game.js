@@ -6,11 +6,14 @@ class Game {
     this.enemies = [];
     this.houses = [];
     this.presents = [];
+    this.coals = [];
     this.lastEnemyTimestamp = 0;
     this.timeLeft = 60;
     this.createControl();
     this.timer = new Timer(this);
     this.score = 0;
+    this.scoreBoard = new ScoreBoard(this);
+    this.keydown = 0;
   }
 
   //draw everything
@@ -25,17 +28,19 @@ class Game {
     for (let present of this.presents) {
       present.draw();
     }
-    for (let enemy of this.enemies) {
-      enemy.draw();
+    for (let coal of this.coals) {
+      coal.draw();
     }
     this.player.draw();
     this.timer.draw();
+    this.scoreBoard.draw();
   }
 
   //control with keys
   createControl() {
     window.addEventListener('keydown', (event) => {
       event.preventDefault();
+      console.log(event);
       switch (event.code) {
         case 'ArrowDown':
           this.player.y += 10;
@@ -50,8 +55,11 @@ class Game {
           this.player.x -= 10;
           break;
         case 'Space':
-          this.throwPresent();
+          this.keydown = Date.now();
           break;
+        case 'KeyC':
+          this.keydown = Date.now();
+          break;      
       }
       this.player.y = Math.max(
         Math.min(this.player.y, canvasHeight - this.player.height),
@@ -62,7 +70,24 @@ class Game {
         0
       );
     });
+
+    window.addEventListener('keyup', (event) => {
+      switch (event.code) {
+        case "Space":
+          const keyupTime = Date.now();
+          const keydownDuration = keyupTime - this.keydown;
+          const presentThrowStrength = Number(keydownDuration / 1000).toFixed(2);
+          this.throwPresent(presentThrowStrength);
+        case "KeyC":
+          const cKeyupTime = Date.now();
+          const cKeydownDuration = cKeyupTime - this.keydown;
+          const coalThrowStrength = Number(cKeydownDuration / 1000).toFixed(2);
+          this.throwCoal(coalThrowStrength);
+      }
+    })
   }
+
+
   //run everything
   runLogic() {
     this.erasePresents();
@@ -78,6 +103,9 @@ class Game {
     for (let present of this.presents) {
         present.runLogic();
     }
+    for (let coal of this.coals) {
+        coal.runLogic();
+    }
     this.checkPresentDelivered();
     this.checkBatEncounter();
   }
@@ -92,6 +120,18 @@ class Game {
       ) {
         const indexOfPresent = this.presents.indexOf(present);
         this.presents.splice(indexOfPresent, 1);
+      }
+    }
+  }
+
+  eraseCoal() {
+    for (let coal of this.coals) {
+      if (
+        present.y >= canvasElement.height ||
+        present.x >= canvasElement.width
+      ) {
+        const indexOfCoal = this.coals.indexOf(coal);
+        this.coals.splice(indexOfCoal, 1);
       }
     }
   }
@@ -140,12 +180,12 @@ class Game {
     }
   }
 
-  throwPresent() {
-    this.presents.push(new Present(this.player.x, this.player.y));
+  throwPresent(strength) {
+    this.presents.push(new Present(this.player.x, this.player.y, strength));
   }
 
-  throwChoal() {
-
+  throwCoal(strength) {
+    this.coals.push(new Coal(this.player.x, this.player.y, strength));
   }
 
   addHouse() {
@@ -194,6 +234,7 @@ class Game {
             this.player.y + this.player.height >= enemy.y &&
             this.player.y <= enemy.y + enemy.height){
             enemy.hit = true;
+            this.score -= 5;
             }
         }
     }

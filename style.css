@@ -18,6 +18,7 @@ body {
 }
 
 canvas {
+    display: block;
     background-color: navy;
     border: yellowgreen solid 1px;
     margin: 0 auto;

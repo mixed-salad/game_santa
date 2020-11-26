@@ -29,5 +29,4 @@ playAgainButton.addEventListener('click', () => {
     playPage.style.display = 'initial';
     game.loop();
     game.timer.startTimer();
-    console.log('clicked');
 })

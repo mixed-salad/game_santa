@@ -1,15 +1,15 @@
-const GRAVITY = 0.6;
+const GRAVITY = 0.4;
 
 class Game {
   constructor() {
     this.createControl();
-    this.reset(); 
+    this.reset();
     this.timer = new Timer(this);
     this.scoreBoard = new ScoreBoard(this);
   }
-  
+
   reset() {
-    this.player = new Player(50, 100);
+    this.player = new Player(this, 50, 100);
     this.enemies = [];
     this.houses = [];
     this.presents = [];
@@ -18,10 +18,11 @@ class Game {
     this.timeLeft = 60;
     this.score = 0;
     this.active = true;
+    this.arrowSelected = 'ArrowRight';
+    this.arrowKeydown = false;
     this.cKeydownTimestamp = 0;
     this.cKeydown;
     this.spaceKeydownTimestamp = 0;
-    this.spaceKeydown = false;
   }
   //draw everything
   drawAll() {
@@ -43,34 +44,63 @@ class Game {
     this.scoreBoard.draw();
   }
 
+  //run everything
+  runLogic() {
+    this.erasePresents();
+    this.eraseEnemy();
+    this.eraseCoal();
+    this.addEnemy();
+    this.addHouse();
+    this.player.runLogic();
+    for (let house of this.houses) {
+      house.runLogic();
+    }
+    for (let enemy of this.enemies) {
+      enemy.runLogic();
+    }
+    for (let present of this.presents) {
+      present.runLogic();
+    }
+    for (let coal of this.coals) {
+      coal.runLogic();
+    }
+    this.checkPresentDelivered();
+    this.checkBatEncounter();
+    this.coalHitBat();
+    if (this.score < 0 || this.timeLeft <= 0) {
+      this.active = false;
+    }
+  }
+
   //control with keys
   createControl() {
     window.addEventListener('keydown', (event) => {
       event.preventDefault();
       switch (event.code) {
         case 'ArrowDown':
-          this.player.y += 10;
+          this.arrowSelected = 'ArrowDown'
+          this.arrowKeydown = true;     
           break;
         case 'ArrowUp':
-          this.player.y -= 10;
+          this.arrowSelected = 'ArrowUp'
+          this.arrowKeydown = true;
           break;
         case 'ArrowRight':
-          this.player.x += 10;
+          this.arrowSelected = 'ArrowRight'
+          this.arrowKeydown = true;
           break;
         case 'ArrowLeft':
-          this.player.x -= 10;
+          this.arrowSelected = 'ArrowLeft'
+          this.arrowKeydown = true;
           break;
         case 'Space':
           this.spaceKeydownTimestamp = Date.now();
-          this.spaceKeydown = true;
-          this.setPresent();          
-          console.log(this.spaceKeydown);
+          this.setPresent();
           break;
         case 'KeyC':
           this.cKeydownTimestamp = Date.now();
-          this.cKeydown = true;
           this.setCoal();
-          break;      
+          break;
       }
       this.player.y = Math.max(
         Math.min(this.player.y, canvasHeight - this.player.height),
@@ -84,54 +114,32 @@ class Game {
 
     window.addEventListener('keyup', (event) => {
       switch (event.code) {
-        case "Space":
+        case 'ArrowDown':
+        case 'ArrowUp':
+        case 'ArrowLeft':
+        case 'ArrowRight':
+          this.arrowKeydown = false;
+          break;
+        case 'Space':
           const keyupTime = Date.now();
           const keydownDuration = keyupTime - this.spaceKeydownTimestamp;
-          const presentThrowStrength = Number((keydownDuration / 1000).toFixed(2));
-          this.spaceKeydown = false;
+          const presentThrowStrength = Number(
+            (keydownDuration / 1000).toFixed(2)
+          );
+          this.presents[this.presents.length-1].getReady = false;
           this.throwPresent(presentThrowStrength);
-          console.log(this.spaceKeydown);
           break;
-        case "KeyC":
+        case 'KeyC':
           const cKeyupTime = Date.now();
-          console.log(cKeyupTime);
           const cKeydownDuration = cKeyupTime - this.cKeydownTimestamp;
-          console.log(cKeydownDuration);
-          const coalThrowStrength = Number((cKeydownDuration / 1000).toFixed(2))
-          ;
-          this.cKeydown = false;
+          const coalThrowStrength = Number(
+            (cKeydownDuration / 1000).toFixed(2)
+          );
+          this.coals[this.coals.length-1].getReady = false;
           this.throwCoal(coalThrowStrength);
           break;
       }
-    })
-  }
-
-
-  //run everything
-  runLogic() {
-    this.erasePresents();
-    this.eraseEnemy();
-    this.eraseCoal();
-    this.addEnemy();
-    this.addHouse();
-    for (let house of this.houses) {
-        house.runLogic();
-    }
-    for (let enemy of this.enemies) {
-        enemy.runLogic();
-    }
-    for (let present of this.presents) {
-        present.runLogic();
-    }
-    for (let coal of this.coals) {
-        coal.runLogic();
-    }
-    this.checkPresentDelivered();
-    this.checkBatEncounter();
-    this.coalHitBat();
-    if(this.score < 0 || this.timeLeft <= 0) {
-      this.active = false;
-    }
+    });
   }
 
   //Erase all the elements that are out of the canvas
@@ -150,10 +158,7 @@ class Game {
 
   eraseCoal() {
     for (let coal of this.coals) {
-      if (
-        coal.y >= canvasElement.height ||
-        coal.x >= canvasElement.width
-      ) {
+      if (coal.y >= canvasElement.height || coal.x >= canvasElement.width) {
         const indexOfCoal = this.coals.indexOf(coal);
         this.coals.splice(indexOfCoal, 1);
       }
@@ -180,17 +185,20 @@ class Game {
 
   //loop to keep refreshing the canvas
   loop() {
-    if(this.active){
-        this.runLogic();
-        this.drawAll();
-        setTimeout(() => {
-            this.loop();
-        }, 1000 / 30);      
+    if (this.active) {
+      this.runLogic();
+      this.drawAll();
+      // setTimeout(() => {
+      //     this.loop();
+      // }, 1000 / 30);
+      window.requestAnimationFrame(() => {
+        this.loop();
+      });
     } else {
+      clearInterval(this.timer.timer);
       playPage.style.display = 'none';
       afterPage.style.display = 'initial';
     }
-
   }
 
   // Adding elements
@@ -209,17 +217,21 @@ class Game {
 
   setPresent() {
     this.presents.push(new Present(this, this.player.x, this.player.y));
+    this.presents[this.presents.length-1].getReady = true;
   }
 
-  throwPresent(strength){
-    this.presents[this.presents.length-1].strength = strength;
+  throwPresent(strength) {
+    this.presents[this.presents.length - 1].strength = strength;
   }
 
   setCoal() {
     this.coals.push(new Coal(this, this.player.x, this.player.y));
+    this.coals[this.coals.length-1].getReady = true;
+
   }
+
   throwCoal(strength) {
-    this.coals[this.coals.length-1].strength = strength;
+    this.coals[this.coals.length - 1].strength = strength;
   }
 
   addHouse() {
@@ -245,46 +257,52 @@ class Game {
     }
   }
 
-  checkPresentDelivered () {
-      for(let present of this.presents) {
-          for(let house of this.houses){
-              if(present.y + present.height > house.y && present.x + present.width >= house.x && present.x <= house.x + house.width) {
-                  const indexOfPresent = this.presents.indexOf(present);
-                  this.presents.splice(indexOfPresent, 1);
-                  if(!house.delivered){
-                      this.score += 10;
-                      house.delivered = true;
-                  }
-                  console.log(this.score);
-              }
+  checkPresentDelivered() {
+    for (let present of this.presents) {
+      for (let house of this.houses) {
+        if (
+          present.y + present.height > house.y &&
+          present.x + present.width >= house.x &&
+          present.x <= house.x + house.width
+        ) {
+          const indexOfPresent = this.presents.indexOf(present);
+          this.presents.splice(indexOfPresent, 1);
+          if (!house.delivered) {
+            this.score += 10;
+            house.delivered = true;
           }
+        }
       }
+    }
   }
 
-  coalHitBat () {
-      for(let coal of this.coals) {
-          for(let enemy of this.enemies){
-              if(coal.y + coal.radius >= enemy.y && 
-                coal.y - coal.radius <= enemy.y + enemy.height &&
-                coal.x + coal.radius >= enemy.x && 
-                coal.x - coal.radius <= enemy.x + enemy.width) {
-                  enemy.dead = true;
-                  this.score += 5;
-                  console.log('coal hit the bat!');
-                  }
-              }
-          }
-      }
-
-  checkBatEncounter () {
-      for(let enemy of this.enemies) {
-          if(this.player.x + this.player.width >= enemy.x &&
-            this.player.x <= enemy.x + enemy.width &&
-            this.player.y + this.player.height >= enemy.y &&
-            this.player.y <= enemy.y + enemy.height){
-            enemy.hit = true;
-            this.score -= 5;
-            }
+  coalHitBat() {
+    for (let coal of this.coals) {
+      for (let enemy of this.enemies) {
+        if (
+          coal.y + coal.radius >= enemy.y &&
+          coal.y - coal.radius <= enemy.y + enemy.height &&
+          coal.x + coal.radius >= enemy.x &&
+          coal.x - coal.radius <= enemy.x + enemy.width
+        ) {
+          enemy.dead = true;
+          this.score += 5;
         }
+      }
     }
+  }
+
+  checkBatEncounter() {
+    for (let enemy of this.enemies) {
+      if (
+        this.player.x + this.player.width >= enemy.x &&
+        this.player.x <= enemy.x + enemy.width &&
+        this.player.y + this.player.height >= enemy.y &&
+        this.player.y <= enemy.y + enemy.height
+      ) {
+        enemy.hit = true;
+        this.score -= 5;
+      }
+    }
+  }
 }

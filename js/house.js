@@ -18,7 +18,7 @@ class House {
         context.strokeRect(this.x, this.y, this.width, this.height)
     }
     runLogic () {
-        this.x -= 2;
+        this.x -= 1;
     }
 
 }

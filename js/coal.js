@@ -4,9 +4,10 @@ class Coal {
     this.x = x;
     this.y = y;
     this.radius = 10;
-    this.speedX = 20;
-    this.speedY = -2;
+    this.speedX = 30;
+    this.speedY = -5;
     this.strength = 0;
+    this.getReady = false;
   }
 
   draw() {
@@ -20,7 +21,7 @@ class Coal {
   }
 
   runLogic() {
-      if(this.game.cKeydown){
+      if(this.getReady){
           this.x = this.x;
           this.y = this.y;
       } else {

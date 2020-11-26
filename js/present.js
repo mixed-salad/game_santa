@@ -8,6 +8,7 @@ class Present {
     this.speedX = 20;
     this.speedY = -6;
     this.strength = 0;
+    this.getReady = false;
   }
 
   draw() {
@@ -18,11 +19,10 @@ class Present {
   }
 
   runLogic() {
-    if(this.game.spaceKeydown){
+    if(this.getReady){
       this.x = this.x;
       this.y = this.y;
-    } else if(!this.game.spaceKeydown) {
-      console.log(`I'm here and the strength is ${this.strength}`);
+    } else {
       this.x += this.speedX * this.strength;
       this.y += this.speedY;
       this.speedX += 0.08;

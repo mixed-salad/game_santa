@@ -18,8 +18,10 @@ class Game {
     this.timeLeft = 60;
     this.score = 0;
     this.active = true;
-    this.cKeydown = 0;
-    this.spaceKeydown = 0;
+    this.cKeydownTimestamp = 0;
+    this.cKeydown;
+    this.spaceKeydownTimestamp = 0;
+    this.spaceKeydown = false;
   }
   //draw everything
   drawAll() {
@@ -30,13 +32,13 @@ class Game {
     for (let enemy of this.enemies) {
       enemy.draw();
     }
+    this.player.draw();
     for (let present of this.presents) {
       present.draw();
     }
     for (let coal of this.coals) {
       coal.draw();
     }
-    this.player.draw();
     this.timer.draw();
     this.scoreBoard.draw();
   }
@@ -59,10 +61,15 @@ class Game {
           this.player.x -= 10;
           break;
         case 'Space':
-          this.spaceKeydown = Date.now();
+          this.spaceKeydownTimestamp = Date.now();
+          this.spaceKeydown = true;
+          this.setPresent();          
+          console.log(this.spaceKeydown);
           break;
         case 'KeyC':
-          this.cKeydown = Date.now();
+          this.cKeydownTimestamp = Date.now();
+          this.cKeydown = true;
+          this.setCoal();
           break;      
       }
       this.player.y = Math.max(
@@ -79,14 +86,20 @@ class Game {
       switch (event.code) {
         case "Space":
           const keyupTime = Date.now();
-          const keydownDuration = keyupTime - this.spaceKeydown;
-          const presentThrowStrength = Number(keydownDuration / 1000).toFixed(2);
+          const keydownDuration = keyupTime - this.spaceKeydownTimestamp;
+          const presentThrowStrength = Number((keydownDuration / 1000).toFixed(2));
+          this.spaceKeydown = false;
           this.throwPresent(presentThrowStrength);
+          console.log(this.spaceKeydown);
           break;
         case "KeyC":
           const cKeyupTime = Date.now();
-          const cKeydownDuration = cKeyupTime - this.cKeydown;
-          const coalThrowStrength = Number(cKeydownDuration / 1000).toFixed(2);
+          console.log(cKeyupTime);
+          const cKeydownDuration = cKeyupTime - this.cKeydownTimestamp;
+          console.log(cKeydownDuration);
+          const coalThrowStrength = Number((cKeydownDuration / 1000).toFixed(2))
+          ;
+          this.cKeydown = false;
           this.throwCoal(coalThrowStrength);
           break;
       }
@@ -194,12 +207,19 @@ class Game {
     }
   }
 
-  throwPresent(strength) {
-    this.presents.push(new Present(this.player.x, this.player.y, strength));
+  setPresent() {
+    this.presents.push(new Present(this, this.player.x, this.player.y));
   }
 
+  throwPresent(strength){
+    this.presents[this.presents.length-1].strength = strength;
+  }
+
+  setCoal() {
+    this.coals.push(new Coal(this, this.player.x, this.player.y));
+  }
   throwCoal(strength) {
-    this.coals.push(new Coal(this.player.x, this.player.y, strength));
+    this.coals[this.coals.length-1].strength = strength;
   }
 
   addHouse() {

@@ -9,11 +9,16 @@ class House {
 
     draw () {
         context.fillStyle = "brown";
-        context.strokeStyle = "darkblue";
+        if(this.delivered) {
+            context.strokeStyle = "yellow";
+        }else{
+            context.strokeStyle = "darkblue";
+        }
         context.fillRect(this.x, this.y, this.width, this.height);
         context.strokeRect(this.x, this.y, this.width, this.height)
     }
     runLogic () {
         this.x -= 2;
     }
+
 }

@@ -14,8 +14,8 @@ const startButton = document.getElementById('start');
 const playAgainButton = document.getElementById('play-again');
 
 //Listners
-const game = new Game();
 
+const game = new Game();
 startButton.addEventListener('click', () => {
     startPage.style.display = 'none';
     playPage.style.display = 'initial';
@@ -24,8 +24,10 @@ startButton.addEventListener('click', () => {
 })
 
 playAgainButton.addEventListener('click', () => {
+    game.reset();
     afterPage.style.display = 'none';
     playPage.style.display = 'initial';
     game.loop();
     game.timer.startTimer();
+    console.log('clicked');
 })

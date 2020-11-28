@@ -1,7 +1,5 @@
 const houseImage = new Image();
 const houseSrcPath = [
-    '../img/houses/house1_purple.png',
-    '../img/houses/house1_red.png',
     '../img/houses/house2_blue.png',
     '../img/houses/house2_lightblue.png',
     '../img/houses/house2_brown.png',
@@ -21,7 +19,7 @@ class House {
     this.width = this.img.width;
     this.height = this.img.height;
     this.delivered = false;
-    this.houseIndex = Math.floor(Math.random() * 10)
+    this.houseIndex = Math.floor(Math.random() * 8)
     this.img.src = houseSrcPath[this.houseIndex];
     this.checkHighestPoint();
     this.targetX = 0;
@@ -33,13 +31,13 @@ class House {
         console.log( 'house #1');
     } else if (this.houseIndex >= 2 && this.houseIndex < 7) {
         console.log('house #2');
-        console.log(this.targetX);
         this.targetX = 100;
+        console.log(this.targetX);
         this.targetWidth = 30;
     } else if (this.houseIndex >= 7 && this.houseIndex < 10) {
         console.log('house #3');
-        console.log(this.targetX);
         this.targetX = 100;
+        console.log(this.targetX);
         this.targetWidth = 60;
     }
     }

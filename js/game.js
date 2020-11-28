@@ -248,46 +248,60 @@ class Game {
   }
 
   addHouse() {
-    if(this.houses.length === 0) {
-      this.houses.push(new House(
-        this,
-        Math.random() * (canvasHeight / 2 - canvasHeight / 4) +
-            canvasHeight / 4))
-      this.houses[0].x = 100;
-      this.houses.push(new House(
-        this,
-        Math.random() * (canvasHeight / 2 - canvasHeight / 4) +
-            canvasHeight / 4))
-      this.houses[1].x = 300;
-      this.houses.push(new House(
-        this,
-        Math.random() * (canvasHeight / 2 - canvasHeight / 4) +
-            canvasHeight / 4))
-      this.houses[2].x = 500;
-    }
-    if (this.houses.length < 6) {
-      this.houses.push(  
+    if (this.houses.length === 0) {
+      this.houses.push(
         new House(
           this,
           Math.random() * (canvasHeight / 2 - canvasHeight / 4) +
             canvasHeight / 4
         )
       );
+      this.houses[0].x = -100;
+      this.houses.push(
+        new House(
+          this,
+          Math.random() * (canvasHeight / 2 - canvasHeight / 4) +
+            canvasHeight / 4
+        )
+      );
+      this.houses[1].x = 200;
+      this.houses.push(
+        new House(
+          this,
+          Math.random() * (canvasHeight / 2 - canvasHeight / 4) +
+            canvasHeight / 4
+        )
+      );
+      this.houses[2].x = 500;
+    }
+
+    if (this.houses[this.houses.length-1].x < canvasWidth - this.houses[this.houses.length-1].img.width) {
+      this.houses.push(
+        new House(
+          this,
+          Math.random() * (canvasHeight / 2 - canvasHeight / 8) +
+            canvasHeight / 8
+        )
+      );
+    }
+    // if (this.houses.length < 5) {
+    //   this.houses.push(
+    //     new House(
+    //       this,
+    //       Math.random() * (canvasHeight / 2 - canvasHeight / 4) +
+    //         canvasHeight / 4
+    //     )
+    //   );
+    // }
   }
-}
-  
 
   checkPresentDelivered() {
     for (let present of this.presents) {
       for (let house of this.houses) {
         if (
-          present.y + present.height > house.y &&
-          present.x + present.width >= house.targetX[0] &&
-          present.x <= house.x + house.targetWidth[0] ||
-          present.y + present.height > house.y &&
-          present.x + present.width >= house.targetX[1] &&
-          present.x <= house.x + house.targetWidth[1]
-
+          (present.y + present.height > house.y &&
+            present.x + present.width >= house.targetX &&
+            present.x <= house.x + house.targetWidth)
         ) {
           const indexOfPresent = this.presents.indexOf(present);
           this.presents.splice(indexOfPresent, 1);

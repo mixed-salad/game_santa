@@ -1,27 +1,40 @@
+const presentImg = new Image();
+presentImg.src = '../img/presents.png';
 class Present {
   constructor(game, x, y) {
     this.game = game;
     this.x = x;
     this.y = y;
-    this.width = 20;
-    this.height = 20;
+    this.width = 40;
+    this.height = 40;
     this.speedX = 20;
     this.speedY = -6;
     this.strength = 0;
     this.getReady = false;
+    this.position = {
+      row: Math.floor(Math.random() * 3),
+      col: Math.floor(Math.random() * 3)
+    }
+    console.log(this.position.row, this.position.col);
   }
 
   draw() {
-    context.fillStyle = 'yellow';
-    context.fillRect(this.x, this.y, this.width, this.height);
-    context.strokeStyle = 'green';
-    context.strokeRect(this.x, this.y, this.width, this.height);
-  }
-
+    this.game.context.drawImage(
+      presentImg,
+      this.position.row * 500,
+      this.position.col * 495,
+      500,
+      495,
+      this.x,
+      this.y,
+      this.width,
+      this.height);
+    }
+  
   runLogic() {
     if(this.getReady){
-      this.x = this.x;
-      this.y = this.y;
+      this.x = this.game.player.x;
+      this.y = this.game.player.y;
     } else {
       this.x += this.speedX * this.strength;
       this.y += this.speedY;

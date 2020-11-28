@@ -1,11 +1,14 @@
 const GRAVITY = 0.4;
 
 class Game {
-  constructor() {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.context = canvas.getContext('2d');
     this.createControl();
     this.reset();
     this.timer = new Timer(this);
     this.scoreBoard = new ScoreBoard(this);
+    this.highScore = 0;
   }
 
   reset() {
@@ -15,7 +18,7 @@ class Game {
     this.presents = [];
     this.coals = [];
     this.lastEnemyTimestamp = 0;
-    this.timeLeft = 60;
+    this.timeLeft = 10;
     this.score = 0;
     this.active = true;
     this.arrowSelected = 'ArrowRight';
@@ -26,7 +29,7 @@ class Game {
   }
   //draw everything
   drawAll() {
-    context.clearRect(0, 0, canvasWidth, canvasHeight);
+    this.context.clearRect(0, 0, canvasWidth, canvasHeight);
     for (let house of this.houses) {
       house.draw();
     }
@@ -67,6 +70,7 @@ class Game {
     this.checkPresentDelivered();
     this.checkBatEncounter();
     this.coalHitBat();
+    this.updateHighScore();
     if (this.score < 0 || this.timeLeft <= 0) {
       this.active = false;
     }
@@ -78,19 +82,19 @@ class Game {
       event.preventDefault();
       switch (event.code) {
         case 'ArrowDown':
-          this.arrowSelected = 'ArrowDown'
-          this.arrowKeydown = true;     
+          this.arrowSelected = 'ArrowDown';
+          this.arrowKeydown = true;
           break;
         case 'ArrowUp':
-          this.arrowSelected = 'ArrowUp'
+          this.arrowSelected = 'ArrowUp';
           this.arrowKeydown = true;
           break;
         case 'ArrowRight':
-          this.arrowSelected = 'ArrowRight'
+          this.arrowSelected = 'ArrowRight';
           this.arrowKeydown = true;
           break;
         case 'ArrowLeft':
-          this.arrowSelected = 'ArrowLeft'
+          this.arrowSelected = 'ArrowLeft';
           this.arrowKeydown = true;
           break;
         case 'Space':
@@ -102,14 +106,14 @@ class Game {
           this.setCoal();
           break;
       }
-      this.player.y = Math.max(
-        Math.min(this.player.y, canvasHeight - this.player.height),
-        0
-      );
-      this.player.x = Math.max(
-        Math.min(this.player.x, canvasWidth - this.player.width),
-        0
-      );
+      // this.player.y = Math.max(
+      //   Math.min(this.player.y, canvasHeight - this.player.height),
+      //   0
+      // );
+      // this.player.x = Math.max(
+      //   Math.min(this.player.x, canvasWidth - this.player.width),
+      //   0
+      // );
     });
 
     window.addEventListener('keyup', (event) => {
@@ -126,7 +130,7 @@ class Game {
           const presentThrowStrength = Number(
             (keydownDuration / 1000).toFixed(2)
           );
-          this.presents[this.presents.length-1].getReady = false;
+          this.presents[this.presents.length - 1].getReady = false;
           this.throwPresent(presentThrowStrength);
           break;
         case 'KeyC':
@@ -135,7 +139,7 @@ class Game {
           const coalThrowStrength = Number(
             (cKeydownDuration / 1000).toFixed(2)
           );
-          this.coals[this.coals.length-1].getReady = false;
+          this.coals[this.coals.length - 1].getReady = false;
           this.throwCoal(coalThrowStrength);
           break;
       }
@@ -198,6 +202,13 @@ class Game {
       clearInterval(this.timer.timer);
       playPage.style.display = 'none';
       afterPage.style.display = 'initial';
+      //Display score
+      const displayScoreElement = document.querySelector('#player-score span');
+      const displayHighScoreElement = document.querySelector(
+        '#high-score span'
+      );
+      displayScoreElement.innerHTML = game.score;
+      displayHighScoreElement.innerHTML = game.highScore;
     }
   }
 
@@ -206,6 +217,7 @@ class Game {
     const currentTimestamp = Date.now();
     if (currentTimestamp > this.lastEnemyTimestamp + 5000) {
       const enemy = new Enemy(
+        this,
         canvasWidth,
         Math.random() * (canvasHeight / 2 - 25) + 25,
         Math.random() * 5
@@ -217,7 +229,7 @@ class Game {
 
   setPresent() {
     this.presents.push(new Present(this, this.player.x, this.player.y));
-    this.presents[this.presents.length-1].getReady = true;
+    this.presents[this.presents.length - 1].getReady = true;
   }
 
   throwPresent(strength) {
@@ -226,8 +238,7 @@ class Game {
 
   setCoal() {
     this.coals.push(new Coal(this, this.player.x, this.player.y));
-    this.coals[this.coals.length-1].getReady = true;
-
+    this.coals[this.coals.length - 1].getReady = true;
   }
 
   throwCoal(strength) {
@@ -236,20 +247,34 @@ class Game {
 
   addHouse() {
     if (this.houses.length === 0) {
-      this.houses.push(
+      this.houses.push(  
         new House(
+          this,
           Math.random() * (canvasWidth / 4 - canvasWidth / 6) + canvasWidth / 6,
           Math.random() * (canvasHeight / 2 - canvasHeight / 4) +
             canvasHeight / 4
         )
       );
+      this.houses[0].x = 100;
+      for (let i = 1; i < 6; i++) {
+        this.houses.push(
+          new House(
+            this,
+            Math.random() * (canvasWidth / 4 - canvasWidth / 6) +
+              canvasWidth / 6,
+            Math.random() * (canvasHeight / 2 - canvasHeight / 4) +
+              canvasHeight / 4
+          )
+        );
+        this.houses[i].x = this.houses[i - 1].x + this.houses[i - 1].width;
+      }
     }
-
     if (
       this.houses[this.houses.length - 1].x <
       canvasWidth - this.houses[this.houses.length - 1].width
     ) {
       const house = new House(
+        this,
         Math.random() * (canvasWidth / 4 - canvasWidth / 6) + canvasWidth / 6,
         Math.random() * (canvasHeight / 2 - canvasHeight / 4) + canvasHeight / 4
       );
@@ -303,6 +328,12 @@ class Game {
         enemy.hit = true;
         this.score -= 5;
       }
+    }
+  }
+
+  updateHighScore() {
+    if (this.score > this.highScore) {
+      this.highScore = this.score;
     }
   }
 }

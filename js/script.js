@@ -1,5 +1,4 @@
 const canvasElement = document.querySelector('canvas');
-const context = canvasElement.getContext('2d');
 
 const canvasWidth = canvasElement.width;
 const canvasHeight = canvasElement.height;
@@ -15,7 +14,7 @@ const playAgainButton = document.getElementById('play-again');
 
 //Listners
 
-const game = new Game();
+const game = new Game(canvasElement);
 startButton.addEventListener('click', () => {
     startPage.style.display = 'none';
     playPage.style.display = 'initial';

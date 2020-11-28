@@ -10,8 +10,8 @@ class Timer {
     }
 
     draw() {
-    context.fillStyle = 'white';
-    context.font = '30px sans-serif';
-    context.fillText(this.game.timeLeft, canvasElement.width * 3/4, 50);
+    this.game.context.fillStyle = 'white';
+    this.game.context.font = '30px sans-serif';
+    this.game.context.fillText(this.game.timeLeft, canvasElement.width * 3/4, 50);
     }
 }

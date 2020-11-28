@@ -13,17 +13,38 @@ const houseSrcPath = [
 ];
 
 class House {
-  constructor(game, width, height) {
+  constructor(game, height) {
     this.game = game;
+    this.img = new Image();
     this.x = canvasWidth;
     this.y = canvasHeight - height;
-    this.width = width;
-    this.height = height;
+    this.width = this.img.width;
+    this.height = this.img.height;
     this.delivered = false;
-    this.img = new Image();
     this.houseIndex = Math.floor(Math.random() * 10)
     this.img.src = houseSrcPath[this.houseIndex];
+    this.checkHighestPoint();
+    this.targetX = 0;
+    this.targetWidth = 0;
   }
+
+  checkHighestPoint() {
+    if(this.houseIndex >= 0 && this.houseIndex < 2){
+        console.log( 'house #1');
+    } else if (this.houseIndex >= 2 && this.houseIndex < 7) {
+        console.log('house #2');
+        console.log(this.targetX);
+        this.targetX = 100;
+        this.targetWidth = 30;
+    } else if (this.houseIndex >= 7 && this.houseIndex < 10) {
+        console.log('house #3');
+        console.log(this.targetX);
+        this.targetX = 100;
+        this.targetWidth = 60;
+    }
+    }
+
+
 
   draw() {
     // this.game.context.fillStyle = 'brown';

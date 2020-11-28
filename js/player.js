@@ -6,29 +6,29 @@ playerImageSrc = [
   '../img/santa/0004.png'
 ]
 
-console.log(playerImg);
+playerImg.src = playerImageSrc[0];
 class Player {
   constructor(game, x, y) {
     this.game = game;
     this.x = x;
     this.y = y;
-    this.height = 35;
-    this.width = 35;
+    this.height = 70;
+    this.width = 105;
     this.maxY = 0;
     this.srcIndexTimestamp = 0;
     this.srcIndex = 0;
+
   }
 
   draw() {
-    if(Date.now() > this.srcIxdexTimestamp + 200) {
+    if(Date.now() > this.srcIndexTimestamp + 200) {
       this.srcIndex++;
       this.srcIndex = this.srcIndex % 4;
       this.srcIndexTimestamp = Date.now();
     }
-    playerImg.src = playerImageSrc[this.srcIndex];
-    this.game.context.fillStyle = "red";
-    this.game.context.fillRect(this.x, this.y, this.width, this.height)
-    this.game.context.drawImage(playerImg, this.x, this.y)
+    // this.game.context.fillStyle = "red";
+    // this.game.context.fillRect(this.x, this.y, this.width, this.height)
+    this.game.context.drawImage(playerImg, this.x, this.y, this.width, this.height)
   }
 
   runLogic() {
@@ -63,7 +63,7 @@ class Player {
   checkMaxY() {
     for (let house of this.game.houses) {
       if (this.x + this.width > house.x &&
-        this.x < house.x + house.width) {
+        this.x < house.x + house.img.width) {
           const indexOfHouse = this.game.houses.indexOf(house);
           this.maxY = this.game.houses[indexOfHouse].y;
         } else if (this.x + this.width < this.game.houses[0].x){

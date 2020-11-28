@@ -15,7 +15,6 @@ class Present {
       row: Math.floor(Math.random() * 3),
       col: Math.floor(Math.random() * 3)
     }
-    console.log(this.position.row, this.position.col);
   }
 
   draw() {

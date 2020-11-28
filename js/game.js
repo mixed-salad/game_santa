@@ -18,7 +18,7 @@ class Game {
     this.presents = [];
     this.coals = [];
     this.lastEnemyTimestamp = 0;
-    this.timeLeft = 10;
+    this.timeLeft = 30;
     this.score = 0;
     this.active = true;
     this.arrowSelected = 'ArrowRight';
@@ -51,6 +51,7 @@ class Game {
   runLogic() {
     this.erasePresents();
     this.eraseEnemy();
+    this.eraseHouse();
     this.eraseCoal();
     this.addEnemy();
     this.addHouse();
@@ -180,9 +181,10 @@ class Game {
 
   eraseHouse() {
     for (let house of this.houses) {
-      if (house.x + house.width < 0) {
+      if (house.x + house.img.width < 0) {
         const indexOfHouse = this.houses.indexOf(house);
         this.houses.splice(indexOfHouse, 1);
+        this.addHouse();
       }
     }
   }
@@ -246,49 +248,29 @@ class Game {
   }
 
   addHouse() {
-    if (this.houses.length === 0) {
+    if (this.houses.length < 4) {
       this.houses.push(  
         new House(
           this,
-          Math.random() * (canvasWidth / 4 - canvasWidth / 6) + canvasWidth / 6,
           Math.random() * (canvasHeight / 2 - canvasHeight / 4) +
             canvasHeight / 4
         )
       );
-      this.houses[0].x = 100;
-      for (let i = 1; i < 6; i++) {
-        this.houses.push(
-          new House(
-            this,
-            Math.random() * (canvasWidth / 4 - canvasWidth / 6) +
-              canvasWidth / 6,
-            Math.random() * (canvasHeight / 2 - canvasHeight / 4) +
-              canvasHeight / 4
-          )
-        );
-        this.houses[i].x = this.houses[i - 1].x + this.houses[i - 1].width;
-      }
-    }
-    if (
-      this.houses[this.houses.length - 1].x <
-      canvasWidth - this.houses[this.houses.length - 1].width
-    ) {
-      const house = new House(
-        this,
-        Math.random() * (canvasWidth / 4 - canvasWidth / 6) + canvasWidth / 6,
-        Math.random() * (canvasHeight / 2 - canvasHeight / 4) + canvasHeight / 4
-      );
-      this.houses.push(house);
-    }
   }
+}
+  
 
   checkPresentDelivered() {
     for (let present of this.presents) {
       for (let house of this.houses) {
         if (
           present.y + present.height > house.y &&
-          present.x + present.width >= house.x &&
-          present.x <= house.x + house.width
+          present.x + present.width >= house.targetX[0] &&
+          present.x <= house.x + house.targetWidth[0] ||
+          present.y + present.height > house.y &&
+          present.x + present.width >= house.targetX[1] &&
+          present.x <= house.x + house.targetWidth[1]
+
         ) {
           const indexOfPresent = this.presents.indexOf(present);
           this.presents.splice(indexOfPresent, 1);

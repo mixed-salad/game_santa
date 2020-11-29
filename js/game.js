@@ -1,6 +1,8 @@
 const GRAVITY = 0.4;
 
 class Game {
+  #score = 0;
+
   constructor(canvas) {
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
@@ -19,7 +21,7 @@ class Game {
     this.coals = [];
     this.lastEnemyTimestamp = 0;
     this.timeLeft = 30;
-    this.score = 0;
+    this.#score = 0;
     this.active = true;
     this.arrowSelected = 'ArrowRight';
     this.arrowKeydown = false;
@@ -27,14 +29,19 @@ class Game {
     this.cKeydown;
     this.spaceKeydownTimestamp = 0;
   }
+
+  get score() {
+    return this.#score;
+  }
+
   //draw everything
   drawAll() {
     this.context.clearRect(0, 0, canvasWidth, canvasHeight);
-    for (let present of this.presents) {
-      present.draw();
-    }
     for (let house of this.houses) {
       house.draw();
+    }
+    for (let present of this.presents) {
+      present.draw();
     }
     for (let enemy of this.enemies) {
       enemy.draw();
@@ -276,9 +283,7 @@ class Game {
     }
     const lastHouse = this.houses[this.houses.length - 1];
     const lastHouseRightEdge = lastHouse.x + lastHouse.width;
-    if (
-      lastHouseRightEdge < canvasWidth && lastHouse.width !== 0
-    ) {
+    if (lastHouseRightEdge < canvasWidth && lastHouse.width !== 0) {
       this.houses.push(
         new House(
           this,
@@ -307,9 +312,9 @@ class Game {
           present.x <= house.x + house.targetWidth
         ) {
           const indexOfPresent = this.presents.indexOf(present);
-          this.presents.splice(indexOfPresent, 1);
+          //this.presents.splice(indexOfPresent, 1);
           if (!house.delivered) {
-            this.score += 10;
+            this.#score += 10;
             house.delivered = true;
           }
         }
@@ -327,7 +332,7 @@ class Game {
           coal.x - coal.radius <= enemy.x + enemy.width
         ) {
           enemy.dead = true;
-          this.score += 5;
+          this.#score += 5;
         }
       }
     }
@@ -342,7 +347,7 @@ class Game {
         this.player.y <= enemy.y + enemy.height
       ) {
         enemy.hit = true;
-        this.score -= 5;
+        this.#score -= 5;
       }
     }
   }

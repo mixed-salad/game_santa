@@ -1,4 +1,14 @@
 const houseImage = new Image();
+const houseSources = [
+    {
+        name: 'blue-left',
+        src: '../img/houses/house2_blue.png',
+        target: {
+            x: 100,
+            width: 28,
+        },
+    },
+];
 const houseSrcPath = [
     '../img/houses/house2_blue.png',
     '../img/houses/house2_lightblue.png',

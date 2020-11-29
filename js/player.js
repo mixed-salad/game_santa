@@ -13,7 +13,7 @@ class Player {
     this.x = x;
     this.y = y;
     this.height = 70;
-    this.width = 105;
+    this.width = 120;
     this.maxY = 0;
     this.srcIndexTimestamp = 0;
     this.srcIndex = 0;

@@ -30,6 +30,9 @@ class Game {
   //draw everything
   drawAll() {
     this.context.clearRect(0, 0, canvasWidth, canvasHeight);
+    for (let present of this.presents) {
+      present.draw();
+    }
     for (let house of this.houses) {
       house.draw();
     }
@@ -37,9 +40,6 @@ class Game {
       enemy.draw();
     }
     this.player.draw();
-    for (let present of this.presents) {
-      present.draw();
-    }
     for (let coal of this.coals) {
       coal.draw();
     }
@@ -274,8 +274,11 @@ class Game {
       );
       this.houses[2].x = 500;
     }
-
-    if (this.houses[this.houses.length-1].x < canvasWidth - this.houses[this.houses.length-1].img.width) {
+    const lastHouse = this.houses[this.houses.length - 1];
+    const lastHouseRightEdge = lastHouse.x + lastHouse.width;
+    if (
+      lastHouseRightEdge < canvasWidth && lastHouse.width !== 0
+    ) {
       this.houses.push(
         new House(
           this,
@@ -299,9 +302,9 @@ class Game {
     for (let present of this.presents) {
       for (let house of this.houses) {
         if (
-          (present.y + present.height > house.y &&
-            present.x + present.width >= house.targetX &&
-            present.x <= house.x + house.targetWidth)
+          present.y + present.height > house.y &&
+          present.x + present.width >= house.targetX &&
+          present.x <= house.x + house.targetWidth
         ) {
           const indexOfPresent = this.presents.indexOf(present);
           this.presents.splice(indexOfPresent, 1);

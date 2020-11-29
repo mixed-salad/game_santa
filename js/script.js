@@ -29,3 +29,5 @@ playAgainButton.addEventListener('click', () => {
     game.loop();
     game.timer.startTimer();
 })
+
+window.game = game;

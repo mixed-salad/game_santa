@@ -1,12 +1,12 @@
 const playerImg = new Image();
-playerImageSrc = [
+const playerImageSrc = [
   '../img/santa/0001.png',
   '../img/santa/0002.png',
   '../img/santa/0003.png',
   '../img/santa/0004.png'
 ]
-
 playerImg.src = playerImageSrc[0];
+
 class Player {
   constructor(game, x, y) {
     this.game = game;
@@ -17,13 +17,13 @@ class Player {
     this.maxY = 0;
     this.srcIndexTimestamp = 0;
     this.srcIndex = 0;
-
   }
 
   draw() {
     if(Date.now() > this.srcIndexTimestamp + 200) {
       this.srcIndex++;
       this.srcIndex = this.srcIndex % 4;
+      playerImg.src = playerImageSrc[this.srcIndex];
       this.srcIndexTimestamp = Date.now();
     }
     // this.game.context.fillStyle = "red";

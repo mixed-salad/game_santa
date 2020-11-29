@@ -1,5 +1,5 @@
 const coalImg = new Image();
-coalImg.src = '../img/coal.png';
+coalImg.src = '../img/coal2.png';
 
 class Coal {
   constructor(game, x, y) {

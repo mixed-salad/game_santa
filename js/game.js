@@ -90,18 +90,22 @@ class Game {
       event.preventDefault();
       switch (event.code) {
         case 'ArrowDown':
+        case 'KeyS':
           this.arrowSelected = 'ArrowDown';
           this.arrowKeydown = true;
           break;
         case 'ArrowUp':
+        case 'KeyW':
           this.arrowSelected = 'ArrowUp';
           this.arrowKeydown = true;
           break;
         case 'ArrowRight':
+        case 'KeyD':
           this.arrowSelected = 'ArrowRight';
           this.arrowKeydown = true;
           break;
         case 'ArrowLeft':
+        case 'KeyA':
           this.arrowSelected = 'ArrowLeft';
           this.arrowKeydown = true;
           break;
@@ -109,7 +113,7 @@ class Game {
           this.spaceKeydownTimestamp = Date.now();
           this.setPresent();
           break;
-        case 'KeyC':
+        case 'KeyK':
           this.cKeydownTimestamp = Date.now();
           this.setCoal();
           break;
@@ -130,6 +134,10 @@ class Game {
         case 'ArrowUp':
         case 'ArrowLeft':
         case 'ArrowRight':
+        case 'KeyS':
+        case 'KeyW':
+        case 'KeyA':
+        case 'KeyD':
           this.arrowKeydown = false;
           break;
         case 'Space':
@@ -141,7 +149,7 @@ class Game {
           this.presents[this.presents.length - 1].getReady = false;
           this.throwPresent(presentThrowStrength);
           break;
-        case 'KeyC':
+        case 'KeyK':
           const cKeyupTime = Date.now();
           const cKeydownDuration = cKeyupTime - this.cKeydownTimestamp;
           const coalThrowStrength = Number(
@@ -259,7 +267,7 @@ class Game {
       this.houses.push(
         new House(
           this,
-          Math.random() * (canvasHeight * 2/3 - canvasHeight / 4) +
+          Math.random() * ((canvasHeight * 2) / 3 - canvasHeight / 4) +
             canvasHeight / 4
         )
       );
@@ -308,8 +316,9 @@ class Game {
       for (let house of this.houses) {
         if (
           present.x >= house.x + house.targetX &&
-          present.x + present.width <= house.x + house.targetX + house.targetWidth &&
-          present.y > house.y 
+          present.x + present.width <=
+            house.x + house.targetX + house.targetWidth &&
+          present.y > house.y
         ) {
           const indexOfPresent = this.presents.indexOf(present);
           this.presents.splice(indexOfPresent, 1);

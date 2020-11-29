@@ -259,7 +259,7 @@ class Game {
       this.houses.push(
         new House(
           this,
-          Math.random() * (canvasHeight / 2 - canvasHeight / 4) +
+          Math.random() * (canvasHeight * 2/3 - canvasHeight / 4) +
             canvasHeight / 4
         )
       );
@@ -271,7 +271,7 @@ class Game {
             canvasHeight / 4
         )
       );
-      this.houses[1].x = 200;
+      this.houses[1].x = 250;
       this.houses.push(
         new House(
           this,
@@ -307,12 +307,12 @@ class Game {
     for (let present of this.presents) {
       for (let house of this.houses) {
         if (
-          present.y + present.height > house.y &&
-          present.x + present.width >= house.targetX &&
-          present.x <= house.x + house.targetWidth
+          present.x >= house.x + house.targetX &&
+          present.x + present.width <= house.x + house.targetX + house.targetWidth &&
+          present.y > house.y 
         ) {
           const indexOfPresent = this.presents.indexOf(present);
-          //this.presents.splice(indexOfPresent, 1);
+          this.presents.splice(indexOfPresent, 1);
           if (!house.delivered) {
             this.#score += 10;
             house.delivered = true;

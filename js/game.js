@@ -30,11 +30,11 @@ class Game {
   //draw everything
   drawAll() {
     this.context.clearRect(0, 0, canvasWidth, canvasHeight);
-    for (let present of this.presents) {
-      present.draw();
-    }
     for (let house of this.houses) {
       house.draw();
+    }
+    for (let present of this.presents) {
+      present.draw();
     }
     for (let enemy of this.enemies) {
       enemy.draw();
@@ -276,9 +276,7 @@ class Game {
     }
     const lastHouse = this.houses[this.houses.length - 1];
     const lastHouseRightEdge = lastHouse.x + lastHouse.width;
-    if (
-      lastHouseRightEdge < canvasWidth && lastHouse.width !== 0
-    ) {
+    if (lastHouseRightEdge < canvasWidth && lastHouse.width !== 0) {
       this.houses.push(
         new House(
           this,

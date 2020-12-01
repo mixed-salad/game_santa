@@ -1,45 +1,53 @@
 body {
-    box-sizing: content-box;
-    margin:0 auto;
-    height: 100vh;
-    
-    
+  box-sizing: content-box;
+  margin: 0 auto;
+  height: 100vh;
+  font-family: 'Love Ya Like A Sister', cursive;
 }
 
 .wrapper {
-    background-image: url('./img/background3.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 100%;
-    background-position: center;
+  background-image: url('./img/background3.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #start {
-    font-weight: 500;
-    width: 100px;
-    height: 75px;
-    border-radius: 25px;
-    border-width: 3px;
-}
-
-h1 {
-    color: white;
+  font-weight: 500;
+  width: 100px;
+  height: 75px;
+  border-radius: 25px;
+  border-width: 3px;
 }
 
 #before-game {
-    display: initial;
-    display: flex;
-    flex-direction: column;
+  display: initial;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 10%;
 }
 
-#play,            
+h1 {
+  color: white;
+  font-size: 4em;
+}
+
+#play,
 #after-game {
-    display: none;
+  display: none;
 }
 
 canvas {
-    display: block;
-    background-color: navy;
-    border: yellowgreen solid 1px;
-    margin: 0 auto;
+  display: block;
+  background-color: navy;
+  border-image: url('img/christmas_lights/holiday-garland-png-3-transparent.png')
+    round;
+  /* border-image-slice: calc(50 / 184 * 100%) calc(80 / 284 * 100%); */
+  border-image-width: 30px 48px;
+  margin: 0 auto;
 }

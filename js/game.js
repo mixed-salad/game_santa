@@ -14,7 +14,7 @@ class Game {
   }
 
   reset() {
-    this.player = new Player(this, 50, 100);
+    this.player = new Player(this, 50, 200);
     this.enemies = [];
     this.houses = [];
     this.presents = [];

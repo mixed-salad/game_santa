@@ -32,11 +32,7 @@ h1 {
     flex-direction: column;
 }
 
-#play {
-    display: none;
-}
-
-#play            
+#play,            
 #after-game {
     display: none;
 }

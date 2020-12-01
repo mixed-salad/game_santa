@@ -1,18 +1,42 @@
 body {
     box-sizing: content-box;
+    margin:0 auto;
+    height: 100vh;
+    
+    
 }
 
+.wrapper {
+    background-image: url('./img/background3.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    background-position: center;
+}
 
+#start {
+    font-weight: 500;
+    width: 100px;
+    height: 75px;
+    border-radius: 25px;
+    border-width: 3px;
+}
+
+h1 {
+    color: white;
+}
 
 #before-game {
     display: initial;
-    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 #play {
     display: none;
 }
 
+#play            
 #after-game {
     display: none;
 }

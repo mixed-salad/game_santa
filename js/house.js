@@ -1,4 +1,6 @@
-const houseImage = new Image();
+//const houseImage = new Image();
+//const deliveredImg = new Image();
+
 // const houseSources = [
 //     {
 //         name: 'blue-left',
@@ -20,12 +22,23 @@ const houseSrcPath = [
   '../img/houses/house3_red.png',
   '../img/houses/house3_teal.png'
 ];
+// const houseSrcPath = [
+//   '../img/houses/house2_delivered.png',
+//   '../img/houses/house2_delivered.png',
+//   '../img/houses/house2_delivered.png',
+//   '../img/houses/house2_delivered.png',
+//   '../img/houses/house2_delivered.png',
+//   '../img/houses/house3_delivered.png',
+//   '../img/houses/house3_delivered.png',
+//   '../img/houses/house3_delivered.png',
+// ];
 
 class House {
   constructor(game, height) {
     this.game = game;
     this.img = new Image();
-    console.dir(this.img);
+    this.deliveredImg = new Image();
+    this.houseLight = false;
     this.x = canvasWidth;
     this.y = canvasHeight - height;
     this.delivered = false;
@@ -40,7 +53,6 @@ class House {
     this.targetX = 0;
     this.targetWidth = 0;
     this.checkTarget();
-    console.log(this.houseIndex, this.targetX, this.targetWidth);
   }
 
   checkTarget() {
@@ -64,7 +76,6 @@ class House {
       this.game.context.fillRect(this.x, this.y, this.width, this.height);
       this.game.context.strokeRect(this.x, this.y, this.width, this.height);
     }
-    //houseImage.src = houseSrcPath[this.houseIndex];
     this.game.context.drawImage(
       this.img,
       this.x,
@@ -72,6 +83,28 @@ class House {
       this.img.width,
       this.img.height
     );
+    if (this.delivered) {
+      // if (this.houseIndex < 5) {
+      //   this.deliveredImg.src = '../img/houses/house2_delivered.png';
+      // } else if (this.houseIndex >= 5 && this.houseIndex < 9) {
+      //   this.deliveredImg.src = '../img/houses/house3_delivered.png';
+      // }
+      if (!this.houseLight) {
+        if(this.houseIndex < 5) {
+          this.deliveredImg.src = '../img/houses/house2_delivered.png';
+        } else {
+          this.deliveredImg.src = '../img/houses/house3_delivered.png';
+        }
+        this.houseLight = true;
+      }
+      this.game.context.drawImage(
+        this.deliveredImg,
+        this.x,
+        this.y,
+        this.img.width,
+        this.img.height
+      );
+    }
   }
 
   runLogic() {

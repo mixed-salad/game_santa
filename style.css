@@ -47,8 +47,7 @@ canvas {
   display: block;
   background-color: navy;
   border: 30px solid transparent;
-  border-image: url('img/christmas_lights/holiday-garland-png-3-transparent.png')
-    round;
+  border-image: url('img/christmas_lights/holiday-garland-png-3-transparent.png') 100 repeat;
   /* border-image-slice: calc(50 / 184 * 100%) calc(80 / 284 * 100%); */
   border-image-width: 30px 48px;
   margin: 0 auto;

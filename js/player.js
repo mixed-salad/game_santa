@@ -15,7 +15,7 @@ class Player {
     this.height = 70;
     this.width = 120;
     this.maxY = 0;
-    this.maxX = 0;
+    this.maxX = canvasWidth;
     this.srcIndexTimestamp = 0;
     this.srcIndex = 0;
     this.canGoForward = true;
@@ -61,7 +61,7 @@ class Player {
 
       this.checkMaxX();
       this.x = Math.max(Math.min(this.x, this.maxX - this.width), 0);
-      // console.log(this.maxX);
+      console.log(this.maxX);
     
   }
 
@@ -77,23 +77,13 @@ class Player {
   }
 
   checkMaxX() {
-    let houseHeight = [];
     for (let house of this.game.houses) {
-      houseHeight.push(house.y);
+      if(this.x + this.width < house.x &&
+        this.y + this.height > house.y) {
+          this.MaxX = house.x;
+        } else {
+          this.MaxX = canvasWidth;
+        }
     }
-    let highestHouseY = Math.min(...houseHeight);
-    let indexOfHighestHouse = 0;
-    for (let house of this.game.houses) {
-      if(house.y === highestHouseY) {
-        indexOfHighestHouse = this.game.houses.indexOf(house);
-      }
-    }  
-    if (this.x + this.width < this.game.houses[indexOfHighestHouse].x &&
-      this.y + this.height > this.game.houses[indexOfHighestHouse].y) {
-        this.maxX = this.game.houses[indexOfHighestHouse].x;
-      } else {
-        this.maxX = canvasWidth;
-      }
-    }
-  
+  }
 }

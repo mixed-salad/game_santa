@@ -11,6 +11,7 @@ class Game {
     this.timer = new Timer(this);
     this.scoreBoard = new ScoreBoard(this);
     this.highScore = 0;
+    this.presentBoard = new PresentBoard(this)
   }
 
   reset() {
@@ -28,6 +29,8 @@ class Game {
     this.cKeydownTimestamp = 0;
     this.cKeydown;
     this.spaceKeydownTimestamp = 0;
+    this.presentCount = 10;
+    this.presentLeft = true;
   }
 
   get score() {
@@ -79,6 +82,7 @@ class Game {
     this.checkBatEncounter();
     this.coalHitBat();
     this.updateHighScore();
+    this.checkPresentCount();
     if (this.score < 0 || this.timeLeft <= 0) {
       this.active = false;
     }
@@ -110,8 +114,12 @@ class Game {
           this.arrowKeydown = true;
           break;
         case 'Space':
-          this.spaceKeydownTimestamp = Date.now();
-          this.setPresent();
+          if (this.presentLeft) {
+            this.spaceKeydownTimestamp = Date.now();
+            this.setPresent();
+          } else {
+            console.log('You have to wait!');
+          }
           break;
         case 'KeyK':
           this.cKeydownTimestamp = Date.now();
@@ -141,13 +149,15 @@ class Game {
           this.arrowKeydown = false;
           break;
         case 'Space':
-          const keyupTime = Date.now();
-          const keydownDuration = keyupTime - this.spaceKeydownTimestamp;
-          const presentThrowStrength = Number(
-            (keydownDuration / 1000).toFixed(2)
-          );
-          this.presents[this.presents.length - 1].getReady = false;
-          this.throwPresent(presentThrowStrength);
+          if (this.presentLeft) {
+            const keyupTime = Date.now();
+            const keydownDuration = keyupTime - this.spaceKeydownTimestamp;
+            const presentThrowStrength = Number(
+              (keydownDuration / 1000).toFixed(2)
+            );
+            this.presents[this.presents.length - 1].getReady = false;
+            this.throwPresent(presentThrowStrength);
+          }
           break;
         case 'KeyK':
           const cKeyupTime = Date.now();
@@ -244,6 +254,16 @@ class Game {
     }
   }
 
+  checkPresentCount() {
+    if (this.presentCount === 0) {
+      this.presentLeft = false;
+      setTimeout(() => {
+        this.presentLeft = true;
+        this.presentCount = 10;
+      }, 3000);
+    }
+  }
+
   setPresent() {
     this.presents.push(new Present(this, this.player.x, this.player.y));
     this.presents[this.presents.length - 1].getReady = true;
@@ -251,6 +271,8 @@ class Game {
 
   throwPresent(strength) {
     this.presents[this.presents.length - 1].strength = strength;
+    this.presentCount--;
+    console.log(this.presentCount);
   }
 
   setCoal() {

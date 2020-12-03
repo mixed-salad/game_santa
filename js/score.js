@@ -1,3 +1,4 @@
+
 class ScoreBoard {
     constructor(game) {
         this.game = game;
@@ -5,7 +6,7 @@ class ScoreBoard {
 
     draw() {
     this.game.context.fillStyle = 'white';
-    this.game.context.font = '30px sans-serif';
-    this.game.context.fillText(this.game.score, canvasElement.width / 4, 50);
+    this.game.context.font = '30px "Love Ya Like A Sister"';
+    this.game.context.fillText(`Score: ${this.game.score}`, canvasElement.width / 4, 50);
     }
 }

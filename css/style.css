@@ -23,6 +23,7 @@ body {
   height: 75px;
   border-radius: 25px;
   border-width: 3px;
+  box-shadow: #FC0 1px 0 10px;
 }
 
 #before-game {
@@ -36,6 +37,8 @@ body {
 h1 {
   color: white;
   font-size: 4em;
+  text-align: left;
+  text-shadow: #FC0 1px 0 10px;
 }
 
 #play,

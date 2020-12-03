@@ -31,6 +31,7 @@ class Game {
     this.spaceKeydownTimestamp = 0;
     this.presentCount = 10;
     this.presentLeft = true;
+    this.canGoForward = true;
   }
 
   get score() {
@@ -84,6 +85,7 @@ class Game {
     this.coalHitBat();
     this.updateHighScore();
     this.checkPresentCount();
+    this.checkCollisionWithHouse();
     if (this.score < 0 || this.timeLeft <= 0) {
       this.active = false;
     }
@@ -392,6 +394,19 @@ class Game {
   updateHighScore() {
     if (this.score > this.highScore) {
       this.highScore = this.score;
+    }
+  }
+
+  checkCollisionWithHouse () {
+    for(let house of this.houses) {
+      if(this.player.y + this.player.height > house.y &&
+        this.player.x + this.player.width > house.x &&
+        this.player.x + this.player.width < house.x + 6) {
+          this.player.x = this.player.x - 10;
+          this.canGoForward = false;
+        } else {
+          this.canGoForward = true;
+        }
     }
   }
 }

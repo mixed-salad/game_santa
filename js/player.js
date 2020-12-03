@@ -49,25 +49,31 @@ class Player {
             this.y -= 5;
             break;
           case 'ArrowRight':
-            this.x += 5;
+            if(this.x + this.width < canvasWidth &&
+              this.game.canGoForward) {
+                this.x += 5;
+            }
             break;
           case 'ArrowLeft':
-            this.x -= 5;
+            if(this.x > 0) {
+              this.x -= 5;
+            }
             break;
         }
       }
       this.checkMaxY();
       this.y = Math.max(Math.min(this.y, this.maxY - this.height), 0);
 
-      this.checkMaxX();
-      this.x = Math.max(Math.min(this.x, this.maxX - this.width), 0);
-      console.log(this.maxX);
+      // this.checkMaxX();
+      // this.x = Math.max(Math.min(this.x, this.maxX - this.width), 0);
+      // console.log(this.maxX);
     
   }
 
   checkMaxY() {
     for (let house of this.game.houses) {
-      if (this.x + this.width > house.x && this.x < house.x + house.img.width) {
+      if (this.x + this.width > house.x + 10 && 
+        this.x < house.x + house.img.width) {
         const indexOfHouse = this.game.houses.indexOf(house);
         this.maxY = this.game.houses[indexOfHouse].y;
       } else if (this.x + this.width < this.game.houses[0].x) {
@@ -80,7 +86,7 @@ class Player {
     for (let house of this.game.houses) {
       if(this.x + this.width < house.x &&
         this.y + this.height > house.y) {
-          this.MaxX = house.x;
+          this.MaxX = house.x - 20;
         } else {
           this.MaxX = canvasWidth;
         }

@@ -55,6 +55,7 @@ class Game {
     }
     this.timer.draw();
     this.scoreBoard.draw();
+    this.presentBoard.draw();
   }
 
   //run everything
@@ -257,22 +258,27 @@ class Game {
   checkPresentCount() {
     if (this.presentCount === 0) {
       this.presentLeft = false;
+      this.presentCount = 5
+      const presentTimer = setInterval(() => {
+        this.presentCount--;
+      }, 1000);
       setTimeout(() => {
         this.presentLeft = true;
         this.presentCount = 10;
-      }, 3000);
+        clearInterval(presentTimer);
+      }, 5000);
     }
   }
 
   setPresent() {
     this.presents.push(new Present(this, this.player.x, this.player.y));
     this.presents[this.presents.length - 1].getReady = true;
+    
   }
 
   throwPresent(strength) {
     this.presents[this.presents.length - 1].strength = strength;
     this.presentCount--;
-    console.log(this.presentCount);
   }
 
   setCoal() {

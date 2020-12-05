@@ -21,6 +21,7 @@ body {
   border-radius: 25px;
 }
 
+
 #start,
 #play-again {
   font-weight: 500;
@@ -29,11 +30,10 @@ body {
   border-radius: 25px;
   border-width: 3px;
   box-shadow: #FC0 1px 0 10px;
-}
-
-#start {
+  margin-left: 150px;
   margin-top: 30px;
 }
+
 
 #before-game {
   display: initial;
@@ -41,6 +41,11 @@ body {
   flex-direction: column;
   justify-content: center;
   padding-left: 10%;
+}
+
+#start {
+  font-size: 1.5em;
+  font-family: 'Love Ya Like A Sister', cursive;
 }
 
 h1 {

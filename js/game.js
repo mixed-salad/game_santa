@@ -30,7 +30,7 @@ class Game {
     this.presents = [];
     this.coals = [];
     this.lastEnemyTimestamp = 0;
-    this.timeLeft = 30;
+    this.timeLeft = 60;
     this.#score = 0;
     this.active = true;
     this.arrowSelected = 'ArrowRight';

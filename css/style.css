@@ -16,6 +16,10 @@ body {
   justify-content: center;
 }
 
+.instructions img {
+  background-color:rgba(255, 255, 255, .4);
+}
+
 #start,
 #play-again {
   font-weight: 500;
@@ -26,6 +30,9 @@ body {
   box-shadow: #FC0 1px 0 10px;
 }
 
+#start {
+  margin-top: 30px;
+}
 #before-game {
   display: initial;
   display: flex;

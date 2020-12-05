@@ -405,14 +405,16 @@ class Game {
   checkBatEncounter() {
     for (let enemy of this.enemies) {
       if (
-        this.player.x + this.player.width >= enemy.x &&
+        this.player.x + this.player.width - 20 >= enemy.x &&
         this.player.x <= enemy.x + enemy.width &&
         this.player.y + this.player.height >= enemy.y &&
-        this.player.y <= enemy.y + enemy.height
+        this.player.y <= enemy.y + enemy.height &&
+        enemy.hit === false
       ) {
         enemy.hit = true;
         this.#score -= 5;
         getHitSound.play();
+        console.log ('you got hit!')
       }
     }
   }

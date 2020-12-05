@@ -17,10 +17,9 @@ body {
 }
 
 .instructions img {
-  background: radial-gradient( white, rgba(255, 255, 255, 0.1));
+  background: radial-gradient(white, rgba(255, 255, 255, 0.1));
   border-radius: 25px;
 }
-
 
 #start,
 #play-again {
@@ -29,11 +28,10 @@ body {
   height: 75px;
   border-radius: 25px;
   border-width: 3px;
-  box-shadow: #FC0 1px 0 10px;
+  box-shadow: #fc0 1px 0 10px;
   margin-left: 150px;
   margin-top: 30px;
 }
-
 
 #before-game {
   display: initial;
@@ -52,7 +50,7 @@ h1 {
   color: white;
   font-size: 4em;
   text-align: left;
-  text-shadow: #FC0 1px 0 10px;
+  text-shadow: #fc0 1px 0 10px;
 }
 
 #play,
@@ -73,7 +71,6 @@ canvas {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  
 }
 
 #after-game {
@@ -81,7 +78,7 @@ canvas {
 }
 
 #score {
-  width: 500px;
+  width: 600px;
   padding: 10px;
   background-color: rgba(0, 17, 71, 0.2);
   border-radius: 25px;

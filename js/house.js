@@ -1,16 +1,6 @@
 //const houseImage = new Image();
 //const deliveredImg = new Image();
 
-// const houseSources = [
-//     {
-//         name: 'blue-left',
-//         src: '../img/houses/house2_blue.png',
-//         target: {
-//             x: 100,
-//             width: 28,
-//         },
-//     },
-// ];
 const houseSrcPath = [
   '../img/houses/house2_blue.png',
   '../img/houses/house2_lightblue.png',
@@ -22,31 +12,21 @@ const houseSrcPath = [
   '../img/houses/house3_red.png',
   '../img/houses/house3_teal.png'
 ];
-// const houseSrcPath = [
-//   '../img/houses/house2_delivered.png',
-//   '../img/houses/house2_delivered.png',
-//   '../img/houses/house2_delivered.png',
-//   '../img/houses/house2_delivered.png',
-//   '../img/houses/house2_delivered.png',
-//   '../img/houses/house3_delivered.png',
-//   '../img/houses/house3_delivered.png',
-//   '../img/houses/house3_delivered.png',
-// ];
 
 class House {
   constructor(game, height) {
     this.game = game;
     this.img = new Image();
     this.deliveredImg = new Image();
-    this.houseLight = false;
     this.x = canvasWidth;
     this.y = canvasHeight - height;
-    this.delivered = false;
     this.houseIndex = Math.floor(Math.random() * 9);
     this.img.onload = () => {
       this.width = this.img.width;
       this.height = this.img.height;
     };
+    this.delivered = false;
+    this.houseLight = false;
     this.img.src = houseSrcPath[this.houseIndex];
     // this.width = this.img.width;
     // this.height = this.img.height;
@@ -66,16 +46,16 @@ class House {
   }
 
   draw() {
-    if (this.game.debug) {
-      this.game.context.fillStyle = 'brown';
-      if (this.delivered) {
-        this.game.context.strokeStyle = 'yellow';
-      } else {
-        this.game.context.strokeStyle = 'darkblue';
-      }
-      this.game.context.fillRect(this.x, this.y, this.width, this.height);
-      this.game.context.strokeRect(this.x, this.y, this.width, this.height);
-    }
+    // if (this.game.debug) {
+    //   this.game.context.fillStyle = 'brown';
+    //   if (this.delivered) {
+    //     this.game.context.strokeStyle = 'yellow';
+    //   } else {
+    //     this.game.context.strokeStyle = 'darkblue';
+    //   }
+    //   this.game.context.fillRect(this.x, this.y, this.width, this.height);
+    //   this.game.context.strokeRect(this.x, this.y, this.width, this.height);
+    // }
     this.game.context.drawImage(
       this.img,
       this.x,

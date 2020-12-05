@@ -369,7 +369,7 @@ class Game {
       for (let house of this.houses) {
         if (
           present.x + present.width >= house.x + house.targetX &&
-          present.x <= house.x + house.targetX + house.targetWidth &&
+          present.x + 30 <= house.x + house.targetX + house.targetWidth &&
           present.y > house.y &&
           present.y < house.y + 100
         ) {
@@ -414,7 +414,6 @@ class Game {
         enemy.hit = true;
         this.#score -= 5;
         getHitSound.play();
-        console.log ('you got hit!')
       }
     }
   }

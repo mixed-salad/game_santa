@@ -18,6 +18,7 @@ body {
 
 .instructions img {
   background-color:rgba(255, 255, 255, .4);
+  border-radius: 25px;
 }
 
 #start,
@@ -33,6 +34,7 @@ body {
 #start {
   margin-top: 30px;
 }
+
 #before-game {
   display: initial;
   display: flex;

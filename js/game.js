@@ -277,14 +277,18 @@ class Game {
         this.presentCount--;
         countWait.play();
       }, 1000);
-      setTimeout(() => {
-        this.presentLeft = true;
-        this.presentCount = 10;
-        presentReady.play();
-        clearInterval(presentTimer);
-      }, 5000);
-      if(!this.active) {
 
+      if (this.timeLeft >= 5) {
+        setTimeout(() => {
+          this.presentLeft = true;
+          this.presentCount = 10;
+          presentReady.play();
+          clearInterval(presentTimer);
+        }, 5000);
+      } else {
+        setTimeout(() => {
+          clearInterval(presentTimer);
+        }, this.timeLeft * 1000);
       }
     }
   }
@@ -359,7 +363,7 @@ class Game {
     // }
   }
 
-//Collisions and Delivered checks
+  //Collisions and Delivered checks
   checkPresentDelivered() {
     for (let present of this.presents) {
       for (let house of this.houses) {

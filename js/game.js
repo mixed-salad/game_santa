@@ -1,5 +1,14 @@
 const GRAVITY = 0.4;
-const deliveredSound = new 
+const deliveredSound = new Audio('../audio/treasure.wav');
+const getHitSound = new Audio('../audio/small-hit.wav');
+const presentEmpty = new Audio('../audio/retro-click.wav');
+const presentReady = new Audio('../audio/flute-bonus.wav');
+const countWait = new Audio('../audio/retro-click.wav');
+const throwPresent = new Audio('../audio/unlock-game-notification.wav');
+const hitBat = new Audio('../audio/ball-tap.wav');
+
+const completionSound = new Audio('../audio/completion.wav');
+
 class Game {
   #score = 0;
 
@@ -11,7 +20,7 @@ class Game {
     this.timer = new Timer(this);
     this.scoreBoard = new ScoreBoard(this);
     this.highScore = 0;
-    this.presentBoard = new PresentBoard(this)
+    this.presentBoard = new PresentBoard(this);
   }
 
   reset() {
@@ -239,6 +248,8 @@ class Game {
       );
       displayScoreElement.innerHTML = game.score;
       displayHighScoreElement.innerHTML = game.highScore;
+      this.reset();
+      completionSound.play();
     }
   }
 
@@ -260,27 +271,33 @@ class Game {
   checkPresentCount() {
     if (this.presentCount === 0) {
       this.presentLeft = false;
-      this.presentCount = 5
+      presentEmpty.play();
+      this.presentCount = 5;
       const presentTimer = setInterval(() => {
         this.presentCount--;
+        countWait.play();
       }, 1000);
       setTimeout(() => {
         this.presentLeft = true;
         this.presentCount = 10;
+        presentReady.play();
         clearInterval(presentTimer);
       }, 5000);
+      if(!this.active) {
+
+      }
     }
   }
 
   setPresent() {
     this.presents.push(new Present(this, this.player.x, this.player.y));
     this.presents[this.presents.length - 1].getReady = true;
-    
   }
 
   throwPresent(strength) {
     this.presents[this.presents.length - 1].strength = strength;
     this.presentCount--;
+    //throwPresent.play();
   }
 
   setCoal() {
@@ -290,6 +307,7 @@ class Game {
 
   throwCoal(strength) {
     this.coals[this.coals.length - 1].strength = strength;
+    //throwCoal.play();
   }
 
   addHouse() {
@@ -341,6 +359,7 @@ class Game {
     // }
   }
 
+//Collisions and Delivered checks
   checkPresentDelivered() {
     for (let present of this.presents) {
       for (let house of this.houses) {
@@ -355,6 +374,7 @@ class Game {
           if (!house.delivered) {
             this.#score += 10;
             house.delivered = true;
+            deliveredSound.play();
           }
         }
       }
@@ -372,6 +392,7 @@ class Game {
         ) {
           enemy.dead = true;
           this.#score += 5;
+          hitBat.play();
         }
       }
     }
@@ -387,6 +408,7 @@ class Game {
       ) {
         enemy.hit = true;
         this.#score -= 5;
+        getHitSound.play();
       }
     }
   }
@@ -397,16 +419,18 @@ class Game {
     }
   }
 
-  checkCollisionWithHouse () {
-    for(let house of this.houses) {
-      if(this.player.y + this.player.height > house.y &&
+  checkCollisionWithHouse() {
+    for (let house of this.houses) {
+      if (
+        this.player.y + this.player.height > house.y &&
         this.player.x + this.player.width > house.x &&
-        this.player.x + this.player.width < house.x + 6) {
-          this.player.x = this.player.x - 10;
-          this.canGoForward = false;
-        } else {
-          this.canGoForward = true;
-        }
+        this.player.x + this.player.width < house.x + 6
+      ) {
+        this.player.x = this.player.x - 10;
+        this.canGoForward = false;
+      } else {
+        this.canGoForward = true;
+      }
     }
   }
 }

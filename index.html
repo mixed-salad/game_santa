@@ -1,50 +1,56 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta property="og:title" content="Santa's in Town!" />
+    <meta property="og:image" content="/images/background3.jpg" />
+    <meta
+      property="og:description"
+      content="Deliver the presents to all the chimneys in town"
+    />
+    <meta property="og:url" content="https://santas-delivery.netlify.app/" />
+    <title>Santa's in Town!</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>repl.it</title>
-  <link href="css/style.css" rel="stylesheet" type="text/css" />
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
-</head>
-
-<body>
-  <div class="wrapper">
-
-    <div id="before-game">
-      <h1>Santa's in Town!</h1>
-      <div class="instructions">
-        <img src="img/game-instruction.png" alt="">
+  <body>
+    <div class="wrapper">
+      <div id="before-game">
+        <h1>Santa's in Town!</h1>
+        <div class="instructions">
+          <img src="img/game-instruction.png" alt="" />
+        </div>
+        <button id="start">PLAY!</button>
       </div>
-     <button id="start">PLAY!</button>
-    </div>
 
-    <div id="play">
-      <canvas width="900" height="600"></canvas>
-    </div>
-
-    <div id="after-game">
-      <div id="score">
-        <h2 id='player-score'>Your Score: <span></span>
-        </h2>
-        <h2 id='high-score'>High Score Record: <span></span></h2>
+      <div id="play">
+        <canvas width="900" height="600"></canvas>
       </div>
-      <button id="play-again">Play again!</button>
+
+      <div id="after-game">
+        <div id="score">
+          <h2 id="player-score">Your Score: <span></span></h2>
+          <h2 id="high-score">High Score Record: <span></span></h2>
+        </div>
+        <button id="play-again">Play again!</button>
+      </div>
+
+      <script src="js/enemy.js"></script>
+      <script src="js/player.js"></script>
+      <script src="js/present.js"></script>
+      <script src="js/game.js"></script>
+      <script src="js/house.js"></script>
+      <script src="js/coal.js"></script>
+      <script src="js/score.js"></script>
+      <script src="js/timer.js"></script>
+      <script src="js/presentBoard.js"></script>
+      <script src="js/script.js"></script>
     </div>
-
-    <script src="js/enemy.js"></script>
-    <script src="js/player.js"></script>
-    <script src="js/present.js"></script>
-    <script src="js/game.js"></script>
-    <script src="js/house.js"></script>
-    <script src="js/coal.js"></script>
-    <script src="js/score.js"></script>
-    <script src="js/timer.js"></script>
-    <script src="js/presentBoard.js"></script>
-    <script src="js/script.js"></script>
-  </div>
-</body>
-
+  </body>
 </html>
